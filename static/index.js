@@ -405,6 +405,7 @@ const MODE_NORMAL = 1,
 
 			await gameLayerMoveNextRow();
 		} else if (_gameStart && !tar.notEmpty) {
+			// 失败
 			createjs.Sound.play("err");
 			tar.classList.add("bad");
 			if (mode === MODE_PRACTICE) {
@@ -512,11 +513,11 @@ const MODE_NORMAL = 1,
 			SubmitResults();
 		}
 
-		if (cps <= 5) return "试着好好练一下？";
-		if (cps <= 8) return "TCL";
-		if (cps <= 10) return "TQL";
-		if (cps <= 15) return "您";
-		return "人？";
+		if (cps <= 5) return "健全之王";
+		if (cps <= 8) return "不够色!";
+		if (cps <= 10) return "太色了8";
+		if (cps <= 15) return "称号: 大色魔";
+		return "涩涩之王！";
 	}
 
 	function toStr(obj) {

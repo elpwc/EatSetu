@@ -30,6 +30,10 @@ const MODE_NORMAL = 1,
 	let setulist = [];
 	let currentSetu = 0;
 
+	const refresh_setu_list = async () => {
+		setulist = await get_setu([], 2, ["mini", "original", "small"], 100);
+	};
+
 	let isDesktop = !navigator["userAgent"].match(/(ipad|iphone|ipod|android|windows phone)/i);
 	let fontunit = isDesktop ? 20 : ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) / 320) * 10;
 	document.write(
@@ -63,8 +67,9 @@ const MODE_NORMAL = 1,
 
 	// 初始化
 	w.init = async function () {
-		setulist = await get_setu([], 2, ["mini"], 100);
-		console.log(setulist);
+		// 获取涩图url列表
+		await refresh_setu_list();
+		//console.log(setulist);
 		currentSetu = 0;
 
 		showWelcomeLayer();
@@ -184,10 +189,12 @@ const MODE_NORMAL = 1,
 			src: "./static/music/tap.mp3",
 			id: "tap",
 		});
+
+		currentSetu = 0;
 		gameRestart();
 	}
 
-	async function gameRestart() {
+	function gameRestart() {
 		_gameBBList = [];
 		_gameBBListIndex = 0;
 		_gameScore = 0;
@@ -195,9 +202,10 @@ const MODE_NORMAL = 1,
 		_gameStart = false;
 		_gameTimeNum = _gameSettingNum;
 		_gameStartTime = 0;
+
 		countBlockSize();
-		await refreshGameLayer(GameLayer[0]);
-		await refreshGameLayer(GameLayer[1], 1);
+		refreshGameLayer(GameLayer[0]);
+		refreshGameLayer(GameLayer[1], 1);
 		updatePanel();
 	}
 
@@ -305,7 +313,7 @@ const MODE_NORMAL = 1,
 	let _ttreg = / t{1,2}(\d+)/,
 		_clearttClsReg = / t{1,2}\d+| bad/;
 
-	async function refreshGameLayer(box, loop, offset) {
+	function refreshGameLayer(box, loop, offset) {
 		let i = (Math.floor(Math.random() * 1000) % 4) + (loop ? 0 : 4);
 		for (let j = 0; j < box.children.length; j++) {
 			let r = box.children[j],
@@ -326,7 +334,7 @@ const MODE_NORMAL = 1,
 				//console.log(setu_resp);
 				//const url = setu_resp?.[0]?.urls?.mini;
 				//console.log(url);
-				const url = setulist[currentSetu]?.urls?.mini;
+				const url = setulist[currentSetu]?.urls?.mini || setulist[currentSetu]?.urls?.thumb;
 				currentSetu++;
 				if (currentSetu > 99) {
 					currentSetu = 0;
@@ -337,6 +345,9 @@ const MODE_NORMAL = 1,
 				i = (Math.floor(j / 4) + 1) * 4 + (Math.floor(Math.random() * 1000) % 4);
 			} else {
 				r.notEmpty = false;
+
+				// 刷新时，去除已有的img
+				r.innerHTML = "";
 			}
 		}
 		if (loop) {
@@ -356,19 +367,19 @@ const MODE_NORMAL = 1,
 		box.style[transitionDuration] = "150ms";
 	}
 
-	async function gameLayerMoveNextRow() {
+	function gameLayerMoveNextRow() {
 		for (let i = 0; i < GameLayer.length; i++) {
 			let g = GameLayer[i];
 			g.y += blockSize;
 			if (g.y > blockSize * Math.floor(g.children.length / 4)) {
-				await refreshGameLayer(g, 1, -1);
+				refreshGameLayer(g, 1, -1);
 			} else {
 				g.style[transform] = "translate3D(0," + g.y + "px,0)";
 			}
 		}
 	}
 
-	async function gameTapEvent(e) {
+	function gameTapEvent(e) {
 		if (_gameOver) {
 			return false;
 		}
@@ -403,7 +414,7 @@ const MODE_NORMAL = 1,
 
 			updatePanel();
 
-			await gameLayerMoveNextRow();
+			gameLayerMoveNextRow();
 		} else if (_gameStart && !tar.notEmpty) {
 			// 失败
 			createjs.Sound.play("err");
@@ -492,7 +503,62 @@ const MODE_NORMAL = 1,
 		$("#GameScoreLayer").css("display", "none");
 	}
 
-	w.replayBtn = function () {
+	w.seeSetu = function () {
+		const setudiv = document.createElement("div");
+		const setudivhead = document.createElement("div");
+		setudivhead.setAttribute("style", "position: sticky; top: 0; left: 0; right: 0; height: 10%; display: flex;");
+
+		const setulistdiv = document.createElement("div");
+		const body = document.getElementsByTagName("body")[0];
+
+		setudiv.setAttribute("id", "setudiv");
+		setudiv.setAttribute("style", "position: fixed; top: 0; left: 0; right: 0; bottom: 0; align-content: start; background-color: #000000c9; z-index: 114;");
+		setulistdiv.setAttribute("style", "display: flex; flex-wrap: wrap; overflow-y: scroll; height: 90%; justify-content: center;");
+
+		const seesetuReturnbtn = document.createElement("button");
+		seesetuReturnbtn.setAttribute("onclick", "seesetuReturn()");
+		seesetuReturnbtn.innerHTML = "返回";
+
+		const tipp = document.createElement("span");
+		tipp.setAttribute("style", "color: white;");
+		tipp.innerHTML = "点击图片会在新窗口打开原图";
+
+		setudivhead.appendChild(seesetuReturnbtn);
+		setudivhead.appendChild(tipp);
+
+		setudiv.appendChild(setudivhead);
+
+		for (let i = 0; i < _gameScore; i++) {
+			const url = setulist[i]?.urls?.small;
+			const url_ori = setulist[i]?.urls?.original;
+
+			const tmp_a = document.createElement("a");
+
+			tmp_a.setAttribute("href", url_ori);
+			tmp_a.setAttribute("target", "_blank");
+			const tmp_img = document.createElement("img");
+			tmp_img.setAttribute("src", url);
+
+			tmp_a.appendChild(tmp_img);
+
+			setulistdiv.appendChild(tmp_a);
+		}
+
+		setudiv.appendChild(setulistdiv);
+
+		body.appendChild(setudiv);
+	};
+
+	w.seesetuReturn = function () {
+		$("#setudiv").remove();
+	};
+
+	w.replayBtn = async function () {
+		const r = confirm("要加载新的涩图图包吗？\r\n不加载的话，显示图片会快一些\r\n(都是缩略图，耗费不了多少流量)");
+		if (r == true) {
+			await refresh_setu_list();
+		}
+
 		gameRestart();
 		hideGameScoreLayer();
 	};
@@ -641,7 +707,7 @@ const MODE_NORMAL = 1,
 		$("#click-before-image").click();
 	};
 
-	w.saveClickBeforeImage = async function () {
+	w.saveClickBeforeImage = function () {
 		const img = document.getElementById("click-before-image");
 		saveImage(img, (r) => {
 			clickBeforeStyle.html(`

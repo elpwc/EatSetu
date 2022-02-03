@@ -7,7 +7,7 @@
     <meta itemprop="description" content="新概念音游" />
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, width=device-width,target-densitydpi=device-dpi" />
-    <link href="./static/index.css?ver=1.1" rel="stylesheet" type="text/css">
+    <link href="./static/index.css?ver=1.2" rel="stylesheet" type="text/css">
     <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <script src="https://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
@@ -15,7 +15,7 @@
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script src="./static/index.js?ver=1.1&dev=2"></script>
+    <script src="./static/index.js?ver=1.2&dev=2"></script>
     <?php
     session_start();
     $str = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'), 0, 8);
@@ -34,6 +34,7 @@
             <button type="button" class="btn btn-secondary btn-lg" id="replay" onclick="replayBtn()">重来</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.reload()">主页</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="seeSetu();">点过的涩图</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">开源</button>
         </div>
     </div>
@@ -42,12 +43,13 @@
         <div class="welcome-bg FILL"></div>
         <div class="FILL BOX-M" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:5;">
             <div style="margin:0 8% 0 9%;">
-                <div style="font-size:2.6em; color:#FEF002;">新概念音游</div><br />
+                <div style="font-size:2.6em; color:#FEF002;">新概念黄油</div><br />
                 <div id="desc" style="display: block;font-size:2.2em; color:#fff; line-height:1.5em;">
                     从最底下的开始<br />
                     看你能吃掉多少涩图<br />
                 </div>
-                <p>手速过快会导致涩图加载赶不上手速()</p>
+                <p style="color: white;">手速过快会导致涩图加载赶不上手速()</p>
+                <p style="color: white;">built by <a href="https://github.com/elpwc">うにこ</a> originally designed by <a href="https://github.com/arcxingye">星夜</a></p>
                 <br />
                 <div id="btn_group" style="display: block;">
                     <a class="btn btn-primary btn-lg" onclick="readyBtn()">开始游戏</a>

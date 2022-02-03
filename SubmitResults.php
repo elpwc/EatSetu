@@ -7,7 +7,7 @@ $key       = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANPMbBfoVUpzusOLIX
 $key_eol   = (string) implode("\n", str_split((string) $key, 64));
 $privateKey = (string) "-----BEGIN PRIVATE KEY-----\n" . $key_eol . "\n-----END PRIVATE KEY-----";
 @openssl_private_decrypt(base64_decode($encryptString), $decrypted, $privateKey);
-$arr=explode('|_|',$decrypted);
+$arr = explode('|_|', $decrypted);
 
 $str = "/\ |\/|\~|\!|\@|\#|\\$|\%|\^|\&|\*|\(|\)|\_|\+|\{|\}|\:|\<|\>|\?|\[|\]|\,|\.|\/|\;|\'|\`|\-|\=|\\\|\|/";
 $score = preg_replace($str, "", $arr[0]);
@@ -23,7 +23,7 @@ if ((!empty($name)) && (strlen($name) <= 30) && (strlen($system) <= 30) && (strl
     $score_stmt->bind_param("s", $name);
     $score_stmt->bind_result($highest, $attempts);
     $score_stmt->execute();
-    $data=$score_stmt->fetch();
+    $data = $score_stmt->fetch();
     $score_stmt->close();
     if (!empty($data)) {
         $attempts += 1;

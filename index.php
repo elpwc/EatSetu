@@ -2,8 +2,8 @@
 <html lang="zh">
 
 <head>
-    <title>吃掉小鹿乃</title>
-    <meta itemprop="name" content="吃掉小鹿乃" />
+    <title>吃掉小涩图</title>
+    <meta itemprop="name" content="吃掉小涩图" />
     <meta itemprop="description" content="新概念音游" />
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, width=device-width,target-densitydpi=device-dpi" />
@@ -11,10 +11,12 @@
     <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <script src="https://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-	<?php
+    <script src="./static/index.js?ver=1.0&dev=2"></script>
+    <?php
     session_start();
     $str = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'), 0, 8);
     $_SESSION['t'] = $str;
@@ -30,8 +32,8 @@
             <div id="GameScoreLayer-score" style="margin:10px 0;">得分</div>
             <div id="GameScoreLayer-bast">最佳</div>
             <button type="button" class="btn btn-secondary btn-lg" id="replay" onclick="replayBtn()">重来</button>
-        <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.reload()">主页</button>
-			<button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.reload()">主页</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">开源</button>
         </div>
     </div>
@@ -48,7 +50,7 @@
                 <br />
                 <div id="btn_group" style="display: block;">
                     <a class="btn btn-primary btn-lg" onclick="readyBtn()">开始游戏</a>
-                    <br/><br/>
+                    <br /><br />
 
                     <div class="dropdown">
                         <a class="btn btn-secondary btn-lg" href="javascript: void(0);" role="button" id="mode" data-bs-toggle="dropdown" aria-expanded="false">普通模式</a>
@@ -59,21 +61,21 @@
                         </ul>
                     </div>
 
-                    <br/>
+                    <br />
                     <a class="btn btn-secondary btn-lg" onclick="show_setting()">游戏设置</a>
                 </div>
                 <div id="setting" style="display: none;">
-                    <div class="container mb-3">
+                    <!--div class="container mb-3">
                         <input type="button" class="btn btn-secondary btn-lg" onclick="getClickBeforeImage()" value="设置点击前的图" style="left: 0">
                         <input type="file" id="click-before-image" accept="image/*" style="display: none;" onchange="saveClickBeforeImage()">
                         <input type="button" class="btn btn-secondary btn-lg" onclick="getClickAfterImage()" value="设置点击后的图" style="right: 0">
                         <input type="file" id="click-after-image" accept="image/*" style="display: none;" onchange="saveClickAfterImage()">
-                    </div>
+                    </div-->
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">标题</span>
                         </div>
-                        <input type="text" id="title" class="form-control" placeholder="吃掉小鹿乃">
+                        <input type="text" id="title" class="form-control" placeholder="吃掉小涩图">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -105,7 +107,6 @@
         </div>
     </div>
 
-    <script src="./static/index.js"></script>
 </body>
 
 </html>

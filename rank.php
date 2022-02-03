@@ -2,7 +2,7 @@
 <html lang="zh">
 
 <head>
-  <title>吃掉小鹿乃-排行榜</title>
+  <title>吃掉小涩图-排行榜</title>
   <meta item="description" content="来看神仙" />
   <meta charset="utf-8" />
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
@@ -43,7 +43,7 @@
     <a href="?lbtype=day<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">日榜</button></a>
     <a href="?lbtype=week<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">周榜</button></a>
     <a href="?lbtype=month<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">月榜</button></a>
-    <br/>tips:大家不要作弊哦~ฅ'ω'ฅ♪
+    <br />tips:大家不要作弊哦~ฅ'ω'ฅ♪
   </div>
   <div class="list-group">
     <?php

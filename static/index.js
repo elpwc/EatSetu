@@ -27,6 +27,9 @@ const MODE_NORMAL = 1,
 		});
 	};
 
+	let setulist = [];
+	let currentSetu = 0;
+
 	let isDesktop = !navigator["userAgent"].match(/(ipad|iphone|ipod|android|windows phone)/i);
 	let fontunit = isDesktop ? 20 : ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) / 320) * 10;
 	document.write(
@@ -59,7 +62,11 @@ const MODE_NORMAL = 1,
 	let mode = getMode();
 
 	// 初始化
-	w.init = function () {
+	w.init = async function () {
+		setulist = await get_setu([], 2, ["mini"], 100);
+		console.log(setulist);
+		currentSetu = 0;
+
 		showWelcomeLayer();
 		body = document.getElementById("gameBody") || document.body;
 		body.style.height = window.innerHeight + "px";
@@ -315,10 +322,15 @@ const MODE_NORMAL = 1,
 					id: r.id,
 				});
 
-				const setu_resp = await get_setu([], 2, ["mini"]);
-				console.log(setu_resp);
-				const url = setu_resp?.[0]?.urls?.mini;
-				console.log(url);
+				//const setu_resp = await get_setu([], 2, ["mini"]);
+				//console.log(setu_resp);
+				//const url = setu_resp?.[0]?.urls?.mini;
+				//console.log(url);
+				const url = setulist[currentSetu]?.urls?.mini;
+				currentSetu++;
+				if (currentSetu > 99) {
+					currentSetu = 0;
+				}
 				r.innerHTML = '<img src="' + url + '" />';
 				r.className += " t" + ((Math.floor(Math.random() * 1000) % 5) + 1);
 				r.notEmpty = true;

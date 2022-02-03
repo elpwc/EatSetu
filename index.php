@@ -49,6 +49,8 @@
                     看你能吃掉多少涩图<br />
                 </div>
                 <p style="color: white;">手速过快会导致涩图加载赶不上手速()</p>
+                <p style="color: white;">为保证快速加载，姑且使用的都是缩略图</p>
+                <p style="color: white;">完毕后可以查看所有点到过的涩图原图~ 分数越高 涩图越多~</p>
                 <p style="color: white;">built by <a href="https://github.com/elpwc">うにこ</a> originally designed by <a href="https://github.com/arcxingye">星夜</a></p>
                 <br />
                 <div id="btn_group" style="display: block;">

@@ -22,6 +22,15 @@
     $_SESSION['t'] = $str;
     echo "<script>var tj='" . $str . "'</script>";
     ?>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?b996226ded12f4c0046b8604396c20e6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 
 <body onLoad="init()" oncontextmenu=self.event.returnValue=false>

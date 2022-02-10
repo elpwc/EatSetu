@@ -44,8 +44,8 @@
             <button type="button" class="btn btn-secondary btn-lg" id="replay" onclick="replayBtn()">重来</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.reload()">主页</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button><br />
-            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">原版开源</button><br />
-            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/elpwc/EatSetu'">涩图版开源</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">原版开源</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/elpwc/EatSetu'">涩图版开源</button><br />
             <button type="button" class="btn btn-warning btn-lg" style="width: 70%; height: 70px; margin-top: 10px;" onclick="seeSetu();"><b>查看所有点到的涩图</b></button>
         </div>
     </div>

@@ -69,6 +69,8 @@ const MODE_NORMAL = 1,
 	w.init = async function () {
 		// 获取涩图url列表
 		await refresh_setu_list();
+
+		loadSetus();
 		//console.log(setulist);
 		currentSetu = 0;
 
@@ -192,6 +194,15 @@ const MODE_NORMAL = 1,
 
 		currentSetu = 0;
 		gameRestart();
+	}
+
+	function loadSetus() {
+		const setudiv = document.createElement("div");
+		setudiv.setAttribute("style", "display: none;");
+		for (let i = 0; i < setulist.length; i++) {
+			setudiv.innerHTML += `<img src="${setulist[i]?.urls?.mini}"/>`;
+		}
+		document.querySelector("body").appendChild(setudiv);
 	}
 
 	function gameRestart() {
@@ -506,7 +517,7 @@ const MODE_NORMAL = 1,
 	w.seeSetu = function () {
 		const setudiv = document.createElement("div");
 		const setudivhead = document.createElement("div");
-		setudivhead.setAttribute("style", "position: sticky; top: 0; left: 0; right: 0; height: 10%; display: flex;");
+		setudivhead.setAttribute("style", "position: sticky; top: 0; left: 0; right: 0; height: fit-content; display: flex;");
 
 		const setulistdiv = document.createElement("div");
 		const body = document.getElementsByTagName("body")[0];
@@ -517,11 +528,12 @@ const MODE_NORMAL = 1,
 
 		const seesetuReturnbtn = document.createElement("button");
 		seesetuReturnbtn.setAttribute("onclick", "seesetuReturn()");
+		seesetuReturnbtn.setAttribute("style", "height: fit-content; min-width: fit-content; padding: 10px 20px; font-size: 1.5em;");
 		seesetuReturnbtn.innerHTML = "返回";
 
 		const tipp = document.createElement("span");
-		tipp.setAttribute("style", "color: white;");
-		tipp.innerHTML = "点击图片会在新窗口打开原图";
+		tipp.setAttribute("style", "color: white; padding-top: 5px; ");
+		tipp.innerHTML = '点击"查看原图"在新窗口打开原图<br />点击pid在新窗口打开pixiv页面';
 
 		setudivhead.appendChild(seesetuReturnbtn);
 		setudivhead.appendChild(tipp);
@@ -532,16 +544,23 @@ const MODE_NORMAL = 1,
 			const url = setulist[i]?.urls?.small;
 			const url_ori = setulist[i]?.urls?.original;
 
-			const tmp_a = document.createElement("a");
-
-			tmp_a.setAttribute("href", url_ori);
-			tmp_a.setAttribute("target", "_blank");
-			const tmp_img = document.createElement("img");
-			tmp_img.setAttribute("src", url);
-
-			tmp_a.appendChild(tmp_img);
-
-			setulistdiv.appendChild(tmp_a);
+			setulistdiv.innerHTML += `
+			<img src="${url}"/>
+			<div style="display: flex; justify-content: space-around; width: 100%;">
+				<span style="color: white; margin: 0; padding: 0; padding-bottom: 5px; font-size: 0.8em;">
+					${setulist[i]?.title}
+				</span>
+				<span style="color: white; margin: 0; padding: 0; padding-bottom: 5px; font-size: 0.8em;">
+				作者:${setulist[i]?.author}
+			</span>
+				<a href="https://www.pixiv.net/artworks/${setulist[i]?.pid}" target="_blank">
+				${" pid:" + setulist[i]?.pid}
+				</a>
+				<a href="${url_ori}" target="_blank">
+				查看原图
+				</a>
+			</div>
+			`;
 		}
 
 		setudiv.appendChild(setulistdiv);
@@ -554,9 +573,11 @@ const MODE_NORMAL = 1,
 	};
 
 	w.replayBtn = async function () {
-		const r = confirm("要加载新的涩图图包吗？\r\n不加载的话，显示图片会快一些\r\n(都是缩略图，耗费不了多少流量)");
+		const r = confirm("要加载新的涩图图包吗？\r\n(都是缩略图，耗费不了多少流量)\r\n不加载的话，弹出涩图会快一些\r\n");
 		if (r == true) {
 			await refresh_setu_list();
+
+			loadSetus();
 		}
 
 		gameRestart();

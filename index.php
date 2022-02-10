@@ -24,7 +24,7 @@
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script src="./static/index.js?ver=1.2&dev=2"></script>
+    <script src="./static/index.js?ver=1.3&dev=9"></script>
 
     <?php
     session_start();
@@ -43,9 +43,10 @@
             <div id="GameScoreLayer-bast">最佳</div>
             <button type="button" class="btn btn-secondary btn-lg" id="replay" onclick="replayBtn()">重来</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.reload()">主页</button>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="seeSetu();">点过的涩图</button>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">开源</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button><br />
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">原版开源</button><br />
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/elpwc/EatSetu'">涩图版开源</button>
+            <button type="button" class="btn btn-warning btn-lg" style="width: 70%; height: 70px; margin-top: 10px;" onclick="seeSetu();"><b>查看所有点到的涩图</b></button>
         </div>
     </div>
     </div>

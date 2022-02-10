@@ -2,6 +2,15 @@
 <html lang="zh">
 
 <head>
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?b996226ded12f4c0046b8604396c20e6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <title>吃掉小涩图</title>
     <meta itemprop="name" content="吃掉小涩图" />
     <meta itemprop="description" content="新概念音游" />
@@ -16,21 +25,13 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
     <script src="./static/index.js?ver=1.2&dev=2"></script>
+
     <?php
     session_start();
     $str = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'), 0, 8);
     $_SESSION['t'] = $str;
     echo "<script>var tj='" . $str . "'</script>";
     ?>
-    <script>
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?b996226ded12f4c0046b8604396c20e6";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
 </head>
 
 <body onLoad="init()" oncontextmenu=self.event.returnValue=false>

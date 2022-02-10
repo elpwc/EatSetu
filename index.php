@@ -24,7 +24,7 @@
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script src="./static/index.js?ver=1.3&dev=9"></script>
+    <script src="./static/index.js?ver=1.4&dev=12"></script>
 
     <?php
     session_start();
@@ -59,9 +59,7 @@
                     从最底下的开始<br />
                     看你能吃掉多少涩图<br />
                 </div>
-                <p style="color: white;">手速过快会导致涩图加载赶不上手速()</p>
-                <p style="color: white;">为保证快速加载，姑且使用的都是缩略图</p>
-                <p style="color: white;">完毕后可以查看所有点到过的涩图原图~ 分数越高 涩图越多~</p>
+                <p style="color: white;">完毕后可以查看点到的涩图原图 分数越高 涩图越多~</p>
                 <p style="color: white;">built by <a href="https://github.com/elpwc">うにこ</a> originally designed by <a href="https://github.com/arcxingye">星夜</a></p>
                 <br />
                 <div id="btn_group" style="display: block;">
@@ -109,7 +107,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">名字</span>
                         </div>
-                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于纪录排行(特殊字符会被过滤)">
+                        <input type="text" id="username" class="form-control" value="无名" maxlength=8 placeholder="用于纪录排行(特殊字符会被过滤)">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">

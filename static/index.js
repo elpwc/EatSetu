@@ -523,7 +523,7 @@ const MODE_NORMAL = 1,
 		const body = document.getElementsByTagName("body")[0];
 
 		setudiv.setAttribute("id", "setudiv");
-		setudiv.setAttribute("style", "position: fixed; top: 0; left: 0; right: 0; bottom: 0; align-content: start; background-color: #000000c9; z-index: 114;");
+		setudiv.setAttribute("style", "position: fixed; top: 0; left: 0; right: 0; bottom: 0; align-content: start; background-color: rgba(0, 0, 0, 0.8); z-index: 114;");
 		setulistdiv.setAttribute("style", "display: flex; flex-wrap: wrap; overflow-y: scroll; height: 90%; justify-content: center;");
 
 		const seesetuReturnbtn = document.createElement("button");

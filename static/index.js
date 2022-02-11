@@ -186,6 +186,9 @@ const MODE_NORMAL = 1,
 
 	let _gameStartTime, _gameStartDatetime;
 
+	/**  按过的涩图index */
+	let pressed_setus = [];
+
 	function gameInit() {
 		createjs.Sound.registerSound({
 			src: "./static/music/err.mp3",
@@ -201,6 +204,7 @@ const MODE_NORMAL = 1,
 		});
 
 		currentSetu = 0;
+
 		gameRestart();
 	}
 
@@ -221,6 +225,8 @@ const MODE_NORMAL = 1,
 		_gameStart = false;
 		_gameTimeNum = _gameSettingNum;
 		_gameStartTime = 0;
+
+		pressed_setus = [];
 
 		countBlockSize();
 		refreshGameLayer(GameLayer[0]);
@@ -355,11 +361,13 @@ const MODE_NORMAL = 1,
 				//const url = setu_resp?.[0]?.urls?.mini;
 				//console.log(url);
 				const url = setulist[currentSetu]?.urls?.mini || setulist[currentSetu]?.urls?.thumb;
+				r.innerHTML = `<img src="${url}" data-setuid="${currentSetu}"/>`;
+
 				currentSetu++;
 				if (currentSetu > 99) {
 					currentSetu = 0;
 				}
-				r.innerHTML = '<img src="' + url + '" />';
+
 				r.className += " t" + ((Math.floor(Math.random() * 1000) % 5) + 1);
 				r.notEmpty = true;
 				i = (Math.floor(j / 4) + 1) * 4 + (Math.floor(Math.random() * 1000) % 4);
@@ -412,8 +420,14 @@ const MODE_NORMAL = 1,
 			return false;
 		}
 
-		// 点到img上时，切换到父div上
+		// 是否点在了涩图上
 		if (tar.tagName === "IMG") {
+			// 记录点的涩图
+			const setuid = Number($(tar).attr("data-setuid"));
+			if (pressed_setus.indexOf(setuid) === -1) {
+				pressed_setus.push(setuid);
+			}
+			// 点到img上时，切换到父div上
 			tar = tar.parentNode;
 		}
 
@@ -549,7 +563,7 @@ const MODE_NORMAL = 1,
 
 		setudiv.appendChild(setudivhead);
 
-		for (let i = 0; i < _gameScore; i++) {
+		pressed_setus.forEach((i) => {
 			const url = setulist[i]?.urls?.small;
 			const url_ori = setulist[i]?.urls?.original;
 
@@ -570,7 +584,8 @@ const MODE_NORMAL = 1,
 				</a>
 			</div>
 			`;
-		}
+		});
+		for (let i = 0; i < _gameScore; i++) {}
 
 		setudiv.appendChild(setulistdiv);
 

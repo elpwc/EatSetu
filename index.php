@@ -24,7 +24,7 @@
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script src="./static/index.js?ver=1.5&dev=13"></script>
+    <script src="./static/index.js?ver=1.6&dev=20"></script>
 
     <?php
     session_start();
@@ -46,7 +46,7 @@
             <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button><br />
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">原版开源</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/elpwc/EatSetu'">涩图版开源</button><br />
-            <button type="button" class="btn btn-warning btn-lg" style="width: 70%; height: 70px; margin-top: 10px;" onclick="seeSetu();"><b>查看所有点到的涩图</b></button>
+            <button type="button" class="btn btn-warning btn-lg" style="width: 50%; height: 70px; margin-top: 10px;" onclick="seeSetu();"><b>查看所有点到的涩图</b></button>
         </div>
     </div>
     </div>

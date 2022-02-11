@@ -111,6 +111,14 @@ const MODE_NORMAL = 1,
 	};
 
 	w.readyBtn = function () {
+		if (!$("#username").val()) {
+			const name = prompt("请输入名字用来排行榜显示喵, 不输或者取消不会上传成绩，可以随时去主页→游戏设置改名字喵", "");
+			if (name) {
+				cookie("username", name, 100);
+				$("#username").val(name);
+			}
+		}
+
 		closeWelcomeLayer();
 		updatePanel();
 	};
@@ -287,6 +295,7 @@ const MODE_NORMAL = 1,
 	function SubmitResults() {
 		let system = "其他操作系统";
 		let area = "异世界";
+
 		if ($("#username").val() && _gameSettingNum === 20) {
 			const systems = [
 				["Win", "Windows"],

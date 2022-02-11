@@ -111,7 +111,7 @@ const MODE_NORMAL = 1,
 	};
 
 	w.readyBtn = function () {
-		if (!$("#username").val()) {
+		if (!cookie("username")) {
 			const name = prompt("请输入名字用来排行榜显示喵, 不输或者取消不会上传成绩，可以随时去主页→游戏设置改名字喵", "");
 			if (name) {
 				cookie("username", name, 100);

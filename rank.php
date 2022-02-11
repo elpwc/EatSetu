@@ -14,12 +14,16 @@
   @require 'conn.php';
   //最大显示页数
   $max_pages = 9;
-  $lbtype = isset($_GET['lbtype']) ? $_GET['lbtype'] : 'day';
+  $lbtype = isset($_GET['lbtype']) ? $_GET['lbtype'] : 'all';
   //每页显示数量
   $num = 30;
   $CurrentPage = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
   $CurrentUser = $_GET['name'];
   $offset = ($CurrentPage - 1) * $num;
+  if ($lbtype == 'all') {
+    $title = "总";
+    $cond = "";
+  }
   if ($lbtype == 'day') {
     $title = "日";
     $cond = "to_days(time) = to_days(now())";
@@ -40,6 +44,7 @@
   </nav>
   <div class="page-header text-center">
     <h1>排行榜(<?php echo $title; ?>榜)</h1>
+    <a href="?lbtype=all<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">总榜</button></a>
     <a href="?lbtype=day<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">日榜</button></a>
     <a href="?lbtype=week<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">周榜</button></a>
     <a href="?lbtype=month<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">月榜</button></a>
@@ -49,7 +54,7 @@
     <?php
     $rank = $offset;
     $filtercond = " ORDER BY score DESC limit ?,?;";
-    $data_sql = "SELECT * FROM " . $ranking . " where " . $cond . $filtercond;
+    $data_sql = "SELECT * FROM " . $ranking . (($cond == "") ? "" : (" where " . $cond)) . $filtercond;
     if ($data_stmt = $link->prepare($data_sql)) {
       $data_stmt->bind_param("ii", $offset, $num);
       $data_stmt->execute();
@@ -69,8 +74,8 @@
       <ul class="pagination">
         <?php
         $rows_sql = "SELECT count(*) FROM " . $ranking . " where " . $cond;
-        $rows_data = mysqli_query($link, $rows_sql);
-        $rows = mysqli_fetch_row($rows_data)[0];
+        $rows_data = @mysqli_query($link, $rows_sql);
+        $rows = @mysqli_fetch_row($rows_data)[0];
         $rows = $rows > $num * $max_pages ? $num * $max_pages : $rows;
         $total = ceil($rows / $num);
         if ($total > 1) {

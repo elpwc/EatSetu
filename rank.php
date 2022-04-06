@@ -13,8 +13,8 @@
   <?php
   @require 'conn.php';
   //最大显示页数
-  $max_pages = 9;
-  $lbtype = isset($_GET['lbtype']) ? $_GET['lbtype'] : 'all';
+  $max_pages = 50;
+  $lbtype = isset($_GET['lbtype']) ? $_GET['lbtype'] : 'day';
   //每页显示数量
   $num = 30;
   $CurrentPage = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -73,7 +73,7 @@
     <nav aria-label="Page navigation example" style="margin-bottom:3em;">
       <ul class="pagination">
         <?php
-        $rows_sql = "SELECT count(*) FROM " . $ranking . " where " . $cond;
+        $rows_sql = "SELECT count(*) FROM " . $ranking . (($cond == "") ? "" : (" where " . $cond));
         $rows_data = @mysqli_query($link, $rows_sql);
         $rows = @mysqli_fetch_row($rows_data)[0];
         $rows = $rows > $num * $max_pages ? $num * $max_pages : $rows;

@@ -1,6 +1,24 @@
 <?php
 session_start();
 @require 'conn.php';
+
+
+/** 获取客户端ip */
+function getip()
+{
+    $ip = false;
+    if (!empty($_SERVER["HTTP_REMOTE_HOST"])) {
+        $ip = $_SERVER["HTTP_REMOTE_HOST"];
+    }
+    $res = $ip ? $ip : $_SERVER['HTTP_X_REAL_IP'];
+    if ($res) {
+        return $res;
+    } else {
+        return 'unknown';
+    }
+}
+
+
 $encryptString = file_get_contents("php://input");
 $decrypted = '';
 $key       = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANPMbBfoVUpzusOLIXcf6MqkGVEJXiM6InglHfepk9VfHxqFbput0EX0fW90cEDI7oB5gG6YojK6dc/3HO+zWol1E2E2hXAcLAYO7tMD5Tgzsb0UCsMbRjqTgttLQqz3N5EEyJaRbnfJCU+yGG07FcK5lk4wuqTW8S9MI4NhipflAgMBAAECgYEAl4bN4sDWnGB1wsZ8V8SdgLSsZBymm99Qn9I2QWSyHlpiX1ANFRXiRtonD6EnWkIm2AWVTAqpKE/cT8AElL0lTJpZdUxsb7Y6nZvbFEmkpFA183f9pzkFjBAxW21RQJMW5MzSnUhYXVZr7AgUaxMDy7M2RMFZ/5XbwKwuNGaT5qECQQD5jCvnlpVmq5tTmIGRy+o18WtQdZRvEvkRAhRw8qAowZtBhCO+ycMtQKCwVDya8aDUItzrIBrzGv2eOfBndZqpAkEA2UZg/nGwpcDd7EVU3XltU5t3cX3wLhUZp1bDv3OZql44h0V2p+p1Oa2qVrF2JmbTu1gWn2YsOFlktrbogKP03QJBAIrXaUoVpxQToH0XWeeza6ENrCZ89NQD212SKatZ4rAqX+ZIzdaFzTjtPzo78+hFTbUZnI6ZM0VVHAyfsdjuPtkCQDAJED6QsgYjOq0Wsul4BASc9W5A8o2tmotVcldsXke9JvA5Gj+LZTlIPMWH3GAnEZ50niPFefdHRC3lCEgQd30CQQDbEqFoSCM4sEHih9h8b3V88X7X/sAbWk+rDnGy6TITplPZrLsBWu3D14VMpiCcNQ1ms6RKZxUFwNZXYynQNrhp";
@@ -42,9 +60,9 @@ if ((!empty($name)) && (strlen($name) <= 30) && (strlen($system) <= 30) && (strl
         }
     } else {
         $attempts = 1;
-        $insert_sql = "INSERT INTO " . $ranking . " (`score`,`time`,`system`,`area`,`message`,`attempts`,`name`) VALUES (?,NOW(),?,?,?,?,?)";
+        $insert_sql = "INSERT INTO " . $ranking . " (`score`,`time`,`system`,`area`,`message`,`attempts`,`name`,`ip`) VALUES (?,NOW(),?,?,?,?,?,?)";
         $insert_stmt = $link->prepare($insert_sql);
-        $insert_stmt->bind_param('isssis', $score, $system, $area, $message, $attempts, $name);
+        $insert_stmt->bind_param('isssiss', $score, $system, $area, $message, $attempts, $name, getip());
         $insert_stmt->execute();
         $insert_stmt->close();
     }

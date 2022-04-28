@@ -59,7 +59,7 @@
       $data_stmt->bind_param("ii", $offset, $num);
       $data_stmt->execute();
       $data_stmt->store_result();
-      $data_stmt->bind_result($id, $score, $name, $time, $system, $area, $message, $attempts);
+      $data_stmt->bind_result($id, $score, $name, $time, $system, $area, $message, $attempts, $ip);
       while ($data_stmt->fetch()) {
         $rank += 1;
         echo "<a href='#' class='list-group-item list-group-item-action'><div class='d-flex w-100 justify-content-between'>

@@ -24,7 +24,7 @@
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script src="./static/index.js?ver=1.7&dev=21"></script>
+    <script src="./static/index.js?ver=1.8&dev=21"></script>
 
     <?php
     session_start();
@@ -60,6 +60,7 @@
                     看你能吃掉多少涩图<br />
                 </div>
                 <p style="color: white;">完毕后可以查看点到的涩图原图 分数越高 涩图越多~</p>
+                <p style="color: white;">开始前需要几秒钟预载涩图，等背景显示出图片後就可以开始游戏了</p>
                 <p style="color: white;">built by <a href="https://github.com/elpwc">うにこ</a> originally designed by <a href="https://github.com/arcxingye">星夜</a></p>
                 <br />
                 <div id="btn_group" style="display: block;">

@@ -8,17 +8,17 @@ const MODE_NORMAL = 1,
 	 * @param tag Tags
 	 * @param r18 0: Non-R18, 1: R18, 2: Mix
 	 * @param size 多个尺寸 'original' | 'regular' | 'small' | 'thumb' | 'mini'
-	 * @param num 请求数量
+	 * @param num 请求数量(小于20)
 	 * @returns 返回一个包含涩图对象数组的Promise，涩图对象见 https://github.com/elpwc/seiheki-test/blob/main/src/utils/responseType.d.ts
 	 * @author wniko/elwpc
 	 */
-	const get_setu = async (tag /*string[]*/, r18 = 1, size = ["original"], num = 1) => {
+	const get_setu = async (tag /*string[]*/, r18 = 1, size = ['original'], num = 1) => {
 		return new Promise((resolve, reject) => {
 			axios
-				.post("./get_img_url.php", {
-					tag: tag ?? ["贫乳"],
+				.post('./get_img_url.php', {
+					tag: tag ?? ['贫乳'],
 					r18: r18 ?? 1,
-					size: size || ["original"],
+					size: size || ['original'],
 					num,
 				})
 				.then((res) => {
@@ -31,18 +31,25 @@ const MODE_NORMAL = 1,
 	let currentSetu = 0;
 
 	const refresh_setu_list = async () => {
-		setulist = await get_setu([], 2, ["mini", "original", "small"], 100);
+		const setulist1 = await get_setu([], 2, ['mini', 'original', 'small'], 20);
+		const setulist2 = await get_setu([], 2, ['mini', 'original', 'small'], 20);
+		const setulist3 = await get_setu([], 2, ['mini', 'original', 'small'], 20);
+		const setulist4 = await get_setu([], 2, ['mini', 'original', 'small'], 20);
+		const setulist5 = await get_setu([], 2, ['mini', 'original', 'small'], 20);
+		setulist = setulist1.concat(setulist2, setulist3, setulist4, setulist5);
 	};
 
-	let isDesktop = !navigator["userAgent"].match(/(ipad|iphone|ipod|android|windows phone)/i);
+	let isDesktop = !navigator['userAgent'].match(/(ipad|iphone|ipod|android|windows phone)/i);
 	let fontunit = isDesktop ? 20 : ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) / 320) * 10;
 	document.write(
 		'<style type="text/css">' +
-			"html,body {font-size:" +
-			(fontunit < 30 ? fontunit : "30") +
-			"px;}" +
-			(isDesktop ? "#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position: absolute;}" : "#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position:fixed;}@media screen and (orientation:landscape) {#landscape {display: box; display: -webkit-box; display: -moz-box; display: -ms-flexbox;}}") +
-			"</style>"
+			'html,body {font-size:' +
+			(fontunit < 30 ? fontunit : '30') +
+			'px;}' +
+			(isDesktop
+				? '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position: absolute;}'
+				: '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position:fixed;}@media screen and (orientation:landscape) {#landscape {display: box; display: -webkit-box; display: -moz-box; display: -ms-flexbox;}}') +
+			'</style>'
 	);
 	let map = { d: 1, f: 2, j: 3, k: 4 };
 	if (isDesktop) {
@@ -75,16 +82,16 @@ const MODE_NORMAL = 1,
 		currentSetu = 0;
 
 		showWelcomeLayer();
-		body = document.getElementById("gameBody") || document.body;
-		body.style.height = window.innerHeight + "px";
-		transform = typeof body.style.webkitTransform != "undefined" ? "webkitTransform" : typeof body.style.msTransform != "undefined" ? "msTransform" : "transform";
-		transitionDuration = transform.replace(/ransform/g, "ransitionDuration");
-		GameTimeLayer = document.getElementById("GameTimeLayer");
-		GameLayer.push(document.getElementById("GameLayer1"));
-		GameLayer[0].children = GameLayer[0].querySelectorAll("div");
-		GameLayer.push(document.getElementById("GameLayer2"));
-		GameLayer[1].children = GameLayer[1].querySelectorAll("div");
-		GameLayerBG = document.getElementById("GameLayerBG");
+		body = document.getElementById('gameBody') || document.body;
+		body.style.height = window.innerHeight + 'px';
+		transform = typeof body.style.webkitTransform != 'undefined' ? 'webkitTransform' : typeof body.style.msTransform != 'undefined' ? 'msTransform' : 'transform';
+		transitionDuration = transform.replace(/ransform/g, 'ransitionDuration');
+		GameTimeLayer = document.getElementById('GameTimeLayer');
+		GameLayer.push(document.getElementById('GameLayer1'));
+		GameLayer[0].children = GameLayer[0].querySelectorAll('div');
+		GameLayer.push(document.getElementById('GameLayer2'));
+		GameLayer[1].children = GameLayer[1].querySelectorAll('div');
+		GameLayerBG = document.getElementById('GameLayerBG');
 		if (GameLayerBG.ontouchstart === null) {
 			GameLayerBG.ontouchstart = gameTapEvent;
 		} else {
@@ -92,30 +99,30 @@ const MODE_NORMAL = 1,
 		}
 		gameInit();
 		initSetting();
-		window.addEventListener("resize", refreshSize, false);
+		window.addEventListener('resize', refreshSize, false);
 	};
 
 	function getMode() {
 		//有cookie优先返回cookie记录的，没有再返回normal
-		return cookie("gameMode") ? parseInt(cookie("gameMode")) : MODE_NORMAL;
+		return cookie('gameMode') ? parseInt(cookie('gameMode')) : MODE_NORMAL;
 	}
 
 	function modeToString(m) {
-		return m === MODE_NORMAL ? "普通模式" : m === MODE_ENDLESS ? "无尽模式" : "练习模式";
+		return m === MODE_NORMAL ? '普通模式' : m === MODE_ENDLESS ? '无尽模式' : '练习模式';
 	}
 
 	w.changeMode = function (m) {
 		mode = m;
-		cookie("gameMode", m);
-		$("#mode").text(modeToString(m));
+		cookie('gameMode', m);
+		$('#mode').text(modeToString(m));
 	};
 
 	w.readyBtn = function () {
-		if (!cookie("username")) {
-			const name = prompt("请输入名字用来排行榜显示喵, 不输或者取消不会上传成绩，可以随时去主页→游戏设置改名字喵", "");
+		if (!cookie('username')) {
+			const name = prompt('请输入名字用来排行榜显示喵, 不输或者取消不会上传成绩，可以随时去主页→游戏设置改名字喵', '');
 			if (name) {
-				cookie("username", name, 100);
-				$("#username").val(name);
+				cookie('username', name, 100);
+				$('#username').val(name);
 			}
 		}
 
@@ -124,8 +131,8 @@ const MODE_NORMAL = 1,
 	};
 
 	w.winOpen = function () {
-		window.open(location.href + "?r=" + Math.random(), "nWin", "height=500,width=320,toolbar=no,menubar=no,scrollbars=no");
-		let opened = window.open("about:blank", "_self");
+		window.open(location.href + '?r=' + Math.random(), 'nWin', 'height=500,width=320,toolbar=no,menubar=no,scrollbars=no');
+		let opened = window.open('about:blank', '_self');
 		opened.opener = null;
 		opened.close();
 	};
@@ -144,10 +151,10 @@ const MODE_NORMAL = 1,
 			for (let j = 0; j < box.children.length; j++) {
 				let r = box.children[j],
 					rstyle = r.style;
-				rstyle.left = (j % 4) * blockSize + "px";
-				rstyle.bottom = Math.floor(j / 4) * blockSize + "px";
-				rstyle.width = blockSize + "px";
-				rstyle.height = blockSize + "px";
+				rstyle.left = (j % 4) * blockSize + 'px';
+				rstyle.bottom = Math.floor(j / 4) * blockSize + 'px';
+				rstyle.width = blockSize + 'px';
+				rstyle.height = blockSize + 'px';
 			}
 		}
 		let f, a;
@@ -160,15 +167,15 @@ const MODE_NORMAL = 1,
 		}
 		let y = (_gameBBListIndex % 10) * blockSize;
 		f.y = y;
-		f.style[transform] = "translate3D(0," + f.y + "px,0)";
+		f.style[transform] = 'translate3D(0,' + f.y + 'px,0)';
 		a.y = -blockSize * Math.floor(f.children.length / 4) + y;
-		a.style[transform] = "translate3D(0," + a.y + "px,0)";
+		a.style[transform] = 'translate3D(0,' + a.y + 'px,0)';
 	}
 
 	function countBlockSize() {
 		blockSize = body.offsetWidth / 4;
-		body.style.height = window.innerHeight + "px";
-		GameLayerBG.style.height = window.innerHeight + "px";
+		body.style.height = window.innerHeight + 'px';
+		GameLayerBG.style.height = window.innerHeight + 'px';
 		touchArea[0] = window.innerHeight;
 		touchArea[1] = window.innerHeight - blockSize * 3;
 	}
@@ -191,16 +198,16 @@ const MODE_NORMAL = 1,
 
 	function gameInit() {
 		createjs.Sound.registerSound({
-			src: "./static/music/err.mp3",
-			id: "err",
+			src: './static/music/err.mp3',
+			id: 'err',
 		});
 		createjs.Sound.registerSound({
-			src: "./static/music/end.mp3",
-			id: "end",
+			src: './static/music/end.mp3',
+			id: 'end',
 		});
 		createjs.Sound.registerSound({
-			src: "./static/music/tap.mp3",
-			id: "tap",
+			src: './static/music/tap.mp3',
+			id: 'tap',
 		});
 
 		currentSetu = 0;
@@ -209,12 +216,12 @@ const MODE_NORMAL = 1,
 	}
 
 	function loadSetus() {
-		const setudiv = document.createElement("div");
-		setudiv.setAttribute("style", "display: none;");
+		const setudiv = document.createElement('div');
+		setudiv.setAttribute('style', 'display: none;');
 		for (let i = 0; i < setulist.length; i++) {
 			setudiv.innerHTML += `<img src="${setulist[i]?.urls?.mini}"/>`;
 		}
-		document.querySelector("body").appendChild(setudiv);
+		document.querySelector('body').appendChild(setudiv);
 	}
 
 	function gameRestart() {
@@ -254,10 +261,10 @@ const MODE_NORMAL = 1,
 		_gameTimeNum--;
 		_gameStartTime++;
 		if (mode === MODE_NORMAL && _gameTimeNum <= 0) {
-			GameTimeLayer.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;时间到！";
+			GameTimeLayer.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;时间到！';
 			gameOver();
-			GameLayerBG.className += " flash";
-			createjs.Sound.play("end");
+			GameLayerBG.className += ' flash';
+			createjs.Sound.play('end');
 		}
 		updatePanel();
 	}
@@ -269,7 +276,7 @@ const MODE_NORMAL = 1,
 			}
 		} else if (mode === MODE_ENDLESS) {
 			let cps = getCPS();
-			let text = cps === 0 ? "计算中" : cps.toFixed(2);
+			let text = cps === 0 ? '计算中' : cps.toFixed(2);
 			GameTimeLayer.innerHTML = `CPS:${text}`;
 		} else {
 			GameTimeLayer.innerHTML = `SCORE:${_gameScore}`;
@@ -277,7 +284,7 @@ const MODE_NORMAL = 1,
 	}
 	//使重试按钮获得焦点
 	function foucusOnReplay() {
-		$("#replay").focus();
+		$('#replay').focus();
 	}
 
 	function gameOver() {
@@ -286,7 +293,7 @@ const MODE_NORMAL = 1,
 		let cps = getCPS();
 		updatePanel();
 		setTimeout(function () {
-			GameLayerBG.className = "";
+			GameLayerBG.className = '';
 			showGameScoreLayer(cps);
 			foucusOnReplay();
 		}, 1500);
@@ -294,21 +301,23 @@ const MODE_NORMAL = 1,
 
 	function encrypt(text) {
 		let encrypt = new JSEncrypt();
-		encrypt.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDTzGwX6FVKc7rDiyF3H+jKpBlRCV4jOiJ4JR33qZPVXx8ahW6brdBF9H1vdHBAyO6AeYBumKIyunXP9xzvs1qJdRNhNoVwHCwGDu7TA+U4M7G9FArDG0Y6k4LbS0Ks9zeRBMiWkW53yQlPshhtOxXCuZZOMLqk1vEvTCODYYqX5QIDAQAB");
+		encrypt.setPublicKey(
+			'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDTzGwX6FVKc7rDiyF3H+jKpBlRCV4jOiJ4JR33qZPVXx8ahW6brdBF9H1vdHBAyO6AeYBumKIyunXP9xzvs1qJdRNhNoVwHCwGDu7TA+U4M7G9FArDG0Y6k4LbS0Ks9zeRBMiWkW53yQlPshhtOxXCuZZOMLqk1vEvTCODYYqX5QIDAQAB'
+		);
 		return encrypt.encrypt(text);
 	}
 
 	function SubmitResults() {
-		let system = "其他操作系统";
-		let area = "异世界";
+		let system = '其他操作系统';
+		let area = '异世界';
 
-		if ($("#username").val() && _gameSettingNum === 20) {
+		if ($('#username').val() && _gameSettingNum === 20) {
 			const systems = [
-				["Win", "Windows"],
-				["like Mac", "iOS"],
-				["Mac", "Macintosh"],
-				["Android", "Android"],
-				["Linux", "Linux"],
+				['Win', 'Windows'],
+				['like Mac', 'iOS'],
+				['Mac', 'Macintosh'],
+				['Android', 'Android'],
+				['Linux', 'Linux'],
 			];
 
 			for (let sys of systems) {
@@ -318,22 +327,22 @@ const MODE_NORMAL = 1,
 				}
 			}
 
-			if (returnCitySN && returnCitySN["cname"]) {
-				area = returnCitySN["cname"];
+			if (returnCitySN && returnCitySN['cname']) {
+				area = returnCitySN['cname'];
 			}
 
 			let httpRequest = new XMLHttpRequest();
-			httpRequest.open("POST", "./SubmitResults.php", true);
-			httpRequest.setRequestHeader("Content-type", "application/json");
-			let name = $("#username").val();
-			let message = $("#message").val();
-			let test = "|_|";
+			httpRequest.open('POST', './SubmitResults.php', true);
+			httpRequest.setRequestHeader('Content-type', 'application/json');
+			let name = $('#username').val();
+			let message = $('#message').val();
+			let test = '|_|';
 			httpRequest.send(encrypt(_gameScore + test + name + test + tj + test + system + test + area + test + message));
 		}
 	}
 
 	function createTimeText(n) {
-		return "&nbsp;TIME:" + Math.ceil(n);
+		return '&nbsp;TIME:' + Math.ceil(n);
 	}
 
 	let _ttreg = / t{1,2}(\d+)/,
@@ -344,11 +353,11 @@ const MODE_NORMAL = 1,
 		for (let j = 0; j < box.children.length; j++) {
 			let r = box.children[j],
 				rstyle = r.style;
-			rstyle.left = (j % 4) * blockSize + "px";
-			rstyle.bottom = Math.floor(j / 4) * blockSize + "px";
-			rstyle.width = blockSize + "px";
-			rstyle.height = blockSize + "px";
-			r.className = r.className.replace(_clearttClsReg, "");
+			rstyle.left = (j % 4) * blockSize + 'px';
+			rstyle.bottom = Math.floor(j / 4) * blockSize + 'px';
+			rstyle.width = blockSize + 'px';
+			rstyle.height = blockSize + 'px';
+			r.className = r.className.replace(_clearttClsReg, '');
 			if (i === j) {
 				// 加入按键
 				_gameBBList.push({
@@ -368,31 +377,31 @@ const MODE_NORMAL = 1,
 					currentSetu = 0;
 				}
 
-				r.className += " t" + ((Math.floor(Math.random() * 1000) % 5) + 1);
+				r.className += ' t' + ((Math.floor(Math.random() * 1000) % 5) + 1);
 				r.notEmpty = true;
 				i = (Math.floor(j / 4) + 1) * 4 + (Math.floor(Math.random() * 1000) % 4);
 			} else {
 				r.notEmpty = false;
 
 				// 刷新时，去除已有的img
-				r.innerHTML = "";
+				r.innerHTML = '';
 			}
 		}
 		if (loop) {
-			box.style.webkitTransitionDuration = "0ms";
-			box.style.display = "none";
+			box.style.webkitTransitionDuration = '0ms';
+			box.style.display = 'none';
 			box.y = -blockSize * (Math.floor(box.children.length / 4) + (offset || 0)) * loop;
 			setTimeout(function () {
-				box.style[transform] = "translate3D(0," + box.y + "px,0)";
+				box.style[transform] = 'translate3D(0,' + box.y + 'px,0)';
 				setTimeout(function () {
-					box.style.display = "block";
+					box.style.display = 'block';
 				}, 100);
 			}, 200);
 		} else {
 			box.y = 0;
-			box.style[transform] = "translate3D(0," + box.y + "px,0)";
+			box.style[transform] = 'translate3D(0,' + box.y + 'px,0)';
 		}
-		box.style[transitionDuration] = "150ms";
+		box.style[transitionDuration] = '150ms';
 	}
 
 	function gameLayerMoveNextRow() {
@@ -402,7 +411,7 @@ const MODE_NORMAL = 1,
 			if (g.y > blockSize * Math.floor(g.children.length / 4)) {
 				refreshGameLayer(g, 1, -1);
 			} else {
-				g.style[transform] = "translate3D(0," + g.y + "px,0)";
+				g.style[transform] = 'translate3D(0,' + g.y + 'px,0)';
 			}
 		}
 	}
@@ -421,9 +430,9 @@ const MODE_NORMAL = 1,
 		}
 
 		// 是否点在了涩图上
-		if (tar.tagName === "IMG") {
+		if (tar.tagName === 'IMG') {
 			// 记录点的涩图
-			const setuid = Number($(tar).attr("data-setuid"));
+			const setuid = Number($(tar).attr('data-setuid'));
 			if (pressed_setus.indexOf(setuid) === -1) {
 				pressed_setus.push(setuid);
 			}
@@ -433,16 +442,22 @@ const MODE_NORMAL = 1,
 
 		console.log(tar, tar.notEmpty);
 
-		if ((p.id === tar.id && tar.notEmpty) || (p.cell === 0 && x < blockSize) || (p.cell === 1 && x > blockSize && x < 2 * blockSize) || (p.cell === 2 && x > 2 * blockSize && x < 3 * blockSize) || (p.cell === 3 && x > 3 * blockSize)) {
+		if (
+			(p.id === tar.id && tar.notEmpty) ||
+			(p.cell === 0 && x < blockSize) ||
+			(p.cell === 1 && x > blockSize && x < 2 * blockSize) ||
+			(p.cell === 2 && x > 2 * blockSize && x < 3 * blockSize) ||
+			(p.cell === 3 && x > 3 * blockSize)
+		) {
 			// 按下之后
 			if (!_gameStart) {
 				//第一次按
 				gameStart();
 			}
-			createjs.Sound.play("tap");
+			createjs.Sound.play('tap');
 			tar = document.getElementById(p.id);
-			tar.className = tar.className.replace(_ttreg, " tt$1");
-			tar.innerHTML = "";
+			tar.className = tar.className.replace(_ttreg, ' tt$1');
+			tar.innerHTML = '';
 			_gameBBListIndex++;
 			_gameScore++;
 
@@ -451,11 +466,11 @@ const MODE_NORMAL = 1,
 			gameLayerMoveNextRow();
 		} else if (_gameStart && !tar.notEmpty) {
 			// 失败
-			createjs.Sound.play("err");
-			tar.classList.add("bad");
+			createjs.Sound.play('err');
+			tar.classList.add('bad');
 			if (mode === MODE_PRACTICE) {
 				setTimeout(() => {
-					tar.classList.remove("bad");
+					tar.classList.remove('bad');
 				}, 500);
 			} else {
 				gameOver();
@@ -467,38 +482,38 @@ const MODE_NORMAL = 1,
 	function createGameLayer() {
 		let html = '<div id="GameLayerBG">';
 		for (let i = 1; i <= 2; i++) {
-			let id = "GameLayer" + i;
+			let id = 'GameLayer' + i;
 			html += '<div id="' + id + '" class="GameLayer">';
 			for (let j = 0; j < 10; j++) {
 				for (let k = 0; k < 4; k++) {
 					// 生成按键base
-					html += '<div id="' + id + "-" + (k + j * 4) + '" num="' + (k + j * 4) + '" class="block' + (k ? " bl" : "") + '">';
+					html += '<div id="' + id + '-' + (k + j * 4) + '" num="' + (k + j * 4) + '" class="block' + (k ? ' bl' : '') + '">';
 
-					html += "</div>";
+					html += '</div>';
 				}
 			}
-			html += "</div>";
+			html += '</div>';
 		}
-		html += "</div>";
+		html += '</div>';
 		html += '<div id="GameTimeLayer"></div>';
 		return html;
 	}
 
 	function closeWelcomeLayer() {
 		welcomeLayerClosed = true;
-		$("#welcome").css("display", "none");
+		$('#welcome').css('display', 'none');
 		updatePanel();
 	}
 
 	function showWelcomeLayer() {
 		welcomeLayerClosed = false;
-		$("#mode").text(modeToString(mode));
-		$("#welcome").css("display", "block");
+		$('#mode').text(modeToString(mode));
+		$('#welcome').css('display', 'block');
 	}
 
 	function getBestScore(score) {
 		// 练习模式不会进入算分界面
-		let cookieName = mode === MODE_NORMAL ? "bast-score" : "endless-best-score";
+		let cookieName = mode === MODE_NORMAL ? 'bast-score' : 'endless-best-score';
 		let best = cookie(cookieName) ? Math.max(parseFloat(cookie(cookieName)), score) : score;
 		cookie(cookieName, best.toFixed(2), 100);
 		return best;
@@ -513,49 +528,49 @@ const MODE_NORMAL = 1,
 	}
 
 	function showGameScoreLayer(cps) {
-		let l = $("#GameScoreLayer");
+		let l = $('#GameScoreLayer');
 		let c = $(`#${_gameBBList[_gameBBListIndex - 1].id}`)
-			.attr("class")
+			.attr('class')
 			.match(_ttreg)[1];
 		let score = mode === MODE_ENDLESS ? cps : _gameScore;
 		let best = getBestScore(score);
-		l.attr("class", l.attr("class").replace(/bgc\d/, "bgc" + c));
-		$("#GameScoreLayer-text").html(shareText(cps));
+		l.attr('class', l.attr('class').replace(/bgc\d/, 'bgc' + c));
+		$('#GameScoreLayer-text').html(shareText(cps));
 		let normalCond = legalDeviationTime() || mode !== MODE_NORMAL;
 		//显示CPS
 
-		$("#GameScoreLayer-CPS").html("CPS&nbsp;" + cps.toFixed(2)); //获取CPS
-		$("#GameScoreLayer-score")
-			.css("display", mode === MODE_ENDLESS ? "none" : "")
-			.html("得分&nbsp;" + (normalCond ? score : "<span style='color:red;'>" + score + "</span>"));
-		$("#GameScoreLayer-bast").html("最佳&nbsp;" + scoreToString(best));
+		$('#GameScoreLayer-CPS').html('CPS&nbsp;' + cps.toFixed(2)); //获取CPS
+		$('#GameScoreLayer-score')
+			.css('display', mode === MODE_ENDLESS ? 'none' : '')
+			.html('得分&nbsp;' + (normalCond ? score : "<span style='color:red;'>" + score + '</span>'));
+		$('#GameScoreLayer-bast').html('最佳&nbsp;' + scoreToString(best));
 
-		l.css("display", "block");
+		l.css('display', 'block');
 	}
 
 	function hideGameScoreLayer() {
-		$("#GameScoreLayer").css("display", "none");
+		$('#GameScoreLayer').css('display', 'none');
 	}
 
 	w.seeSetu = function () {
-		const setudiv = document.createElement("div");
-		const setudivhead = document.createElement("div");
-		setudivhead.setAttribute("style", "position: sticky; top: 0; left: 0; right: 0; height: fit-content; display: flex;");
+		const setudiv = document.createElement('div');
+		const setudivhead = document.createElement('div');
+		setudivhead.setAttribute('style', 'position: sticky; top: 0; left: 0; right: 0; height: fit-content; display: flex;');
 
-		const setulistdiv = document.createElement("div");
-		const body = document.getElementsByTagName("body")[0];
+		const setulistdiv = document.createElement('div');
+		const body = document.getElementsByTagName('body')[0];
 
-		setudiv.setAttribute("id", "setudiv");
-		setudiv.setAttribute("style", "position: fixed; top: 0; left: 0; right: 0; bottom: 0; align-content: start; background-color: rgba(0, 0, 0, 0.8); z-index: 114;");
-		setulistdiv.setAttribute("style", "display: flex; flex-wrap: wrap; overflow-y: scroll; height: 90%; justify-content: center;");
+		setudiv.setAttribute('id', 'setudiv');
+		setudiv.setAttribute('style', 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; align-content: start; background-color: rgba(0, 0, 0, 0.8); z-index: 114;');
+		setulistdiv.setAttribute('style', 'display: flex; flex-wrap: wrap; overflow-y: scroll; height: 90%; justify-content: center;');
 
-		const seesetuReturnbtn = document.createElement("button");
-		seesetuReturnbtn.setAttribute("onclick", "seesetuReturn()");
-		seesetuReturnbtn.setAttribute("style", "height: fit-content; min-width: fit-content; padding: 10px 20px; font-size: 1.5em;");
-		seesetuReturnbtn.innerHTML = "返回";
+		const seesetuReturnbtn = document.createElement('button');
+		seesetuReturnbtn.setAttribute('onclick', 'seesetuReturn()');
+		seesetuReturnbtn.setAttribute('style', 'height: fit-content; min-width: fit-content; padding: 10px 20px; font-size: 1.5em;');
+		seesetuReturnbtn.innerHTML = '返回';
 
-		const tipp = document.createElement("span");
-		tipp.setAttribute("style", "color: white; padding-top: 5px; ");
+		const tipp = document.createElement('span');
+		tipp.setAttribute('style', 'color: white; padding-top: 5px; ');
 		tipp.innerHTML = '点击"查看原图"在新窗口打开原图<br />点击pid在新窗口打开pixiv页面';
 
 		setudivhead.appendChild(seesetuReturnbtn);
@@ -577,7 +592,7 @@ const MODE_NORMAL = 1,
 				作者:${setulist[i]?.author}
 			</span>
 				<a href="https://www.pixiv.net/artworks/${setulist[i]?.pid}" target="_blank">
-				${" pid:" + setulist[i]?.pid}
+				${' pid:' + setulist[i]?.pid}
 				</a>
 				<a href="${url_ori}" target="_blank">
 				查看原图
@@ -593,11 +608,11 @@ const MODE_NORMAL = 1,
 	};
 
 	w.seesetuReturn = function () {
-		$("#setudiv").remove();
+		$('#setudiv').remove();
 	};
 
 	w.replayBtn = async function () {
-		const r = confirm("要加载新的涩图图包吗？\r\n(都是缩略图，耗费不了多少流量)\r\n不加载的话，弹出涩图会快一些\r\n");
+		const r = confirm('要加载新的涩图图包吗？\r\n(都是缩略图，耗费不了多少流量)\r\n不加载的话，弹出涩图会快一些\r\n');
 		if (r == true) {
 			await refresh_setu_list();
 
@@ -619,20 +634,20 @@ const MODE_NORMAL = 1,
 			let date2 = new Date();
 			deviationTime = date2.getTime() - _date1.getTime();
 			if (!legalDeviationTime()) {
-				return "倒计时多了" + (deviationTime / 1000 - 20).toFixed(2) + "s";
+				return '倒计时多了' + (deviationTime / 1000 - 20).toFixed(2) + 's';
 			}
 			SubmitResults();
 		}
 
-		if (cps <= 5) return "健全之王";
-		if (cps <= 8) return "不够色!";
-		if (cps <= 10) return "太色了8";
-		if (cps <= 15) return "称号: 大色魔";
-		return "涩涩之王！";
+		if (cps <= 5) return '健全之王';
+		if (cps <= 8) return '不够色!';
+		if (cps <= 10) return '太色了8';
+		if (cps <= 15) return '称号: 大色魔';
+		return '涩涩之王！';
 	}
 
 	function toStr(obj) {
-		if (typeof obj === "object") {
+		if (typeof obj === 'object') {
 			return JSON.stringify(obj);
 		} else {
 			return obj;
@@ -646,53 +661,65 @@ const MODE_NORMAL = 1,
 					let date = new Date();
 					date.setTime(date.getTime() + 864e5 * time), (time = date.toGMTString());
 				}
-				return (document.cookie = name + "=" + escape(toStr(value)) + (time ? "; expires=" + time + (arguments[3] ? "; domain=" + arguments[3] + (arguments[4] ? "; path=" + arguments[4] + (arguments[5] ? "; secure" : "") : "") : "") : "")), !0;
+				return (
+					(document.cookie =
+						name +
+						'=' +
+						escape(toStr(value)) +
+						(time ? '; expires=' + time + (arguments[3] ? '; domain=' + arguments[3] + (arguments[4] ? '; path=' + arguments[4] + (arguments[5] ? '; secure' : '') : '') : '') : '')),
+					!0
+				);
 			}
-			return (value = document.cookie.match("(?:^|;)\\s*" + name.replace(/([-.*+?^${}()|[\]\/\\])/g, "\\$1") + "=([^;]*)")), (value = value && "string" == typeof value[1] ? unescape(value[1]) : !1), (/^(\{|\[).+\}|\]$/.test(value) || /^[0-9]+$/g.test(value)) && eval("value=" + value), value;
+			return (
+				(value = document.cookie.match('(?:^|;)\\s*' + name.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)')),
+				(value = value && 'string' == typeof value[1] ? unescape(value[1]) : !1),
+				(/^(\{|\[).+\}|\]$/.test(value) || /^[0-9]+$/g.test(value)) && eval('value=' + value),
+				value
+			);
 		}
 		let data = {};
-		value = document.cookie.replace(/\s/g, "").split(";");
-		for (let i = 0; value.length > i; i++) (name = value[i].split("=")), name[1] && (data[name[0]] = unescape(name[1]));
+		value = document.cookie.replace(/\s/g, '').split(';');
+		for (let i = 0; value.length > i; i++) (name = value[i].split('=')), name[1] && (data[name[0]] = unescape(name[1]));
 		return data;
 	}
 
 	document.write(createGameLayer());
 
 	function initSetting() {
-		$("#username").val(cookie("username") ? cookie("username") : "");
-		$("#message").val(cookie("message") ? cookie("message") : "");
-		if (cookie("title")) {
-			$("title").text(cookie("title"));
+		$('#username').val(cookie('username') ? cookie('username') : '');
+		$('#message').val(cookie('message') ? cookie('message') : '');
+		if (cookie('title')) {
+			$('title').text(cookie('title'));
 		}
-		let keyboard = cookie("keyboard");
+		let keyboard = cookie('keyboard');
 		if (keyboard) {
 			keyboard = keyboard.toString().toLowerCase();
-			$("#keyboard").val(keyboard);
+			$('#keyboard').val(keyboard);
 			map = {};
 			map[keyboard.charAt(0)] = 1;
 			map[keyboard.charAt(1)] = 2;
 			map[keyboard.charAt(2)] = 3;
 			map[keyboard.charAt(3)] = 4;
 		}
-		if (cookie("gameTime")) {
-			document.getElementById("gameTime").value = cookie("gameTime");
-			_gameSettingNum = parseInt(cookie("gameTime"));
+		if (cookie('gameTime')) {
+			document.getElementById('gameTime').value = cookie('gameTime');
+			_gameSettingNum = parseInt(cookie('gameTime'));
 			gameRestart();
 		}
 	}
 
 	w.show_btn = function () {
-		$("#btn_group,#desc").css("display", "block");
-		$("#setting").css("display", "none");
+		$('#btn_group,#desc').css('display', 'block');
+		$('#setting').css('display', 'none');
 	};
 
 	w.show_setting = function () {
-		$("#btn_group,#desc").css("display", "none");
-		$("#setting").css("display", "block");
+		$('#btn_group,#desc').css('display', 'none');
+		$('#setting').css('display', 'block');
 	};
 
 	w.save_cookie = function () {
-		const settings = ["username", "message", "keyboard", "title", "gameTime"];
+		const settings = ['username', 'message', 'keyboard', 'title', 'gameTime'];
 		for (let s of settings) {
 			cookie(s, $(`#${s}`).val().toString(), 100);
 		}
@@ -700,15 +727,15 @@ const MODE_NORMAL = 1,
 	};
 
 	function isnull(val) {
-		let str = val.replace(/(^\s*)|(\s*$)/g, "");
-		return str === "" || str === undefined || str == null;
+		let str = val.replace(/(^\s*)|(\s*$)/g, '');
+		return str === '' || str === undefined || str == null;
 	}
 
 	w.goRank = function () {
-		let name = $("#username").val();
-		let link = "./rank.php";
+		let name = $('#username').val();
+		let link = './rank.php';
 		if (!isnull(name)) {
-			link += "?name=" + name;
+			link += '?name=' + name;
 		}
 		window.location.href = link;
 	};
@@ -719,7 +746,7 @@ const MODE_NORMAL = 1,
 		}
 
 		let p = _gameBBList[_gameBBListIndex];
-		let base = parseInt($(`#${p.id}`).attr("num")) - p.cell;
+		let base = parseInt($(`#${p.id}`).attr('num')) - p.cell;
 		let num = base + index - 1;
 		let id = p.id.substring(0, 11) + num;
 
@@ -733,8 +760,8 @@ const MODE_NORMAL = 1,
 		gameTapEvent(fakeEvent);
 	}
 
-	const clickBeforeStyle = $("<style></style>");
-	const clickAfterStyle = $("<style></style>");
+	const clickBeforeStyle = $('<style></style>');
+	const clickAfterStyle = $('<style></style>');
 	clickBeforeStyle.appendTo($(document.head));
 	clickAfterStyle.appendTo($(document.head));
 
@@ -749,11 +776,11 @@ const MODE_NORMAL = 1,
 	}
 
 	w.getClickBeforeImage = function () {
-		$("#click-before-image").click();
+		$('#click-before-image').click();
 	};
 
 	w.saveClickBeforeImage = function () {
-		const img = document.getElementById("click-before-image");
+		const img = document.getElementById('click-before-image');
 		saveImage(img, (r) => {
 			clickBeforeStyle.html(`
                 .t1, .t2, .t3, .t4, .t5 {
@@ -764,11 +791,11 @@ const MODE_NORMAL = 1,
 	};
 
 	w.getClickAfterImage = function () {
-		$("#click-after-image").click();
+		$('#click-after-image').click();
 	};
 
 	w.saveClickAfterImage = function () {
-		const img = document.getElementById("click-after-image");
+		const img = document.getElementById('click-after-image');
 		saveImage(img, (r) => {
 			clickAfterStyle.html(`
                 .tt1, .tt2, .tt3, .tt4, .tt5 {
